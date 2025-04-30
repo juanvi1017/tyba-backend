@@ -1,0 +1,23 @@
+services:
+  app:
+    image: tyba-base
+    container_name: tyba-backend
+    env_file:
+      - ./.envs/.env
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile
+    environment:
+      DJANGO_DEBUG: "true"
+    volumes:
+      -  ./backend-tyba:${APP_DIR:-/opt/tyba}
+    ports:
+      - "8000:8000"
+    networks:
+      - tyba-network-backend
+    command: python manage.py runserver 0.0.0.0:8000
+
+networks:
+  tyba-network-backend:
+    name: tyba-network-backend
+    external: false
